@@ -60,6 +60,10 @@ GEM
       execjs
     coffee-script-source (1.12.2)
     concurrent-ruby (1.0.5)
+    dotenv (2.2.1)
+    dotenv-rails (2.2.1)
+      dotenv (= 2.2.1)
+      railties (>= 3.2, < 5.2)
     erubis (2.7.0)
     execjs (2.7.0)
     faraday (0.12.2)
@@ -217,6 +221,7 @@ DEPENDENCIES
   better_errors
   byebug
   coffee-rails (~> 4.2)
+  dotenv-rails
   foundation-rails
   jbuilder (~> 2.5)
   jquery-rails
