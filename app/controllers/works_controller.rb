@@ -2,6 +2,7 @@ class WorksController < ApplicationController
   # We should always be able to tell what category
   # of work we're dealing with
   before_action :category_from_work, except: [:root, :index, :new, :create]
+  before_action :require_owner_check, only: [:edit, :destroy, :update]
   skip_before_action :require_login, only: [:root]
 
   def root
@@ -36,6 +37,14 @@ class WorksController < ApplicationController
 
   def show
     @votes = @work.votes.order(created_at: :desc)
+  end
+
+  def require_owner_check
+    if @work.user_id != @login_user.id
+      flash[:status] = :failure
+      flash[:result_text] = "You must be owner of the work to do that!"
+      redirect_to work_path(@work)
+    end
   end
 
   def edit
