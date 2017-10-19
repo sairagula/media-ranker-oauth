@@ -39,14 +39,6 @@ class WorksController < ApplicationController
     @votes = @work.votes.order(created_at: :desc)
   end
 
-  def require_owner_check
-    if @work.user_id != @login_user.id
-      flash[:status] = :failure
-      flash[:result_text] = "You must be owner of the work to do that!"
-      redirect_to work_path(@work)
-    end
-  end
-
   def edit
   end
 
@@ -100,12 +92,20 @@ class WorksController < ApplicationController
 
 private
   def media_params
-    params.require(:work).permit(:title, :category, :creator, :description, :publication_year)
+    params.require(:work).permit(:title, :category, :creator, :description, :publication_year, :user_id)
   end
 
   def category_from_work
     @work = Work.find_by(id: params[:id])
     render_404 unless @work
     @media_category = @work.category.downcase.pluralize
+  end
+
+  def require_owner_check
+    if @work.user_id != @login_user.id
+      flash[:status] = :failure
+      flash[:result_text] = "You must be owner of the work to do that!"
+      redirect_to work_path(@work)
+    end
   end
 end
